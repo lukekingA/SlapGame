@@ -20,7 +20,12 @@
 	<main class="row">
 		<div class="col">
 			<div class="row">
-				<div class="col-3"></div>
+				<div class="col-3 text-center">
+					<h2>Monster</h2>
+					<H4 id="monsterName"></H4>
+					<p>age: <span id="monsterAge"></span></p>
+					<p>health: <span id="monsterHealth"></span></p>
+				</div>
 				<div class="col-6">
 					<div class="row">
 						<div class="col d-flex justify-content-center">
@@ -28,15 +33,17 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col d-flex justify-content-center">
-							<button type="button" class="btn bg-dark text-white">punch</button>
-							<button type="button" class="btn bg-dark text-white">kick</button>
-							<button type="button" class="btn bg-dark text-white">slap</button>
+						<div id="actions" class="col d-flex justify-content-center">
+							<button id="punch" type="button" class="btn bg-dark text-white">punch</button>
+							<button id="kick" type="button" class="btn bg-dark text-white">kick</button>
+							<button id="slap" type="button" class="btn bg-dark text-white">slap</button>
 						</div>
 					</div>
 				</div>
-				<div class="col-3">
-
+				<div class="col-3 text-center">
+					<h2>Player</h2>
+					<H4 id="playerName"></H4>
+					<p>health: <span id="playerHealth"></span></p>
 				</div>
 			</div>
 		</div>
@@ -44,6 +51,8 @@
 	<footer class="row">
 		<div class="col"></div>
 	</footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 	<script src="game.js"></script>
 </body>
 
