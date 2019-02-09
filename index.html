@@ -21,17 +21,20 @@
 	<main class="row">
 		<div class="col">
 			<div class="row">
-				<div class="col-3 text-center">
+				<div class="col-3 text-left">
 					<h2>Monster</h2>
 					<H4 id="monsterName"></H4>
-					<p>age: <span id="monsterAge"></span></p>
-					<p>health: <span id="monsterHealth"></span></p>
-					<div class="progressBar"><span></span></div>
+					<div>
+						<p>age: <span id="monsterAge"></span></p>
+						<p>hunger: <span id="monsterHunger"></span></p>
+						<p>health: <span id="monsterHealth"></span></p>
+						<div class="progressBar"><span></span></div>
+					</div>
 				</div>
-				<div class="col-6">
-					<div class="row">
+				<div class="col-6 d-flex flex-column justify-content-between">
+					<div class="row h-75 ">
 						<div class="col d-flex justify-content-center">
-							<img class="img-fluid" src="//lorempixel.com/200/200" alt="">
+							<img class="img-fluid" src="assetts/images/Bear.png" alt="">
 						</div>
 					</div>
 					<div class="row">
@@ -42,10 +45,16 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-3 text-center">
+				<div class="col-3 d-flex flex-column align-items-end">
 					<h2>Player</h2>
 					<H4 id="playerName"></H4>
-					<p>health: <span id="playerHealth"></span></p>
+					<div>
+						<p>health: <span id="playerHealth"></span></p>
+						<div class="progressBar"><span></span></div>
+					</div id="addons">
+					<button id="knife" class="btn bg-dark btn-sm text-white mt-2" type="button">Knife</button>
+					<button id="sword" class="btn bg-dark btn-sm text-white mt-2" type="button">Sword</button>
+					<button id="armor" class="btn bg-dark btn-sm text-white mt-2" type="button">Armor</button>
 				</div>
 			</div>
 		</div>
