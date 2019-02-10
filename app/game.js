@@ -83,13 +83,15 @@ const monster = {
     if (Math.ceil(Math.random() * 10) > 5) {
       attackValue = monster.attacks.bite;
     }
-    attackValue -= player.addons.armor.set ? game.addons.player.armor.value : 0;
-    attackValue += attackValue * (monster.hunger / 100);
-    attackValue -= attackValue * (monster.strength.energy / 100);
+    attackValue -= player.addons.armor.set ? player.addons.armor.value : 0;
+    attackValue += attackValue * Math.floor(monster.hunger / 100);
+    attackValue -= Math.floor(
+      attackValue * (monster.strength.energy / 2 / 100)
+    );
     if (player.strength.health - attackValue < 0) {
       player.strength.health = 0;
     } else {
-      player.strength.health -= Math.floor(attackValue);
+      player.strength.health -= attackValue;
     }
   }
 };
@@ -127,12 +129,21 @@ const game = {
     game.count++;
     if (monster.strength.health < player.strength.health) {
       player.wins++;
+    } else {
+      let picture = $("#bearPicture").attr("src");
+      $("#bearPicture").attr("src", "assetts/images/bear1.png");
+      $("#bearPicture").addClass("lose");
+      setTimeout(() => {
+        $("#bearPicture").removeClass("lose");
+        $("#bearPicture").attr("src", picture);
+      }, 300);
     }
     let winner = player.strength.health ? player.name : monster.name;
+
     game.updatePage();
     $("body").append(
       `<div id="popup" class="card">
-        <div class="card-body">
+        <div class="card-body text-center">
           <h4 class="card-title">${winner} Has Won</h4>
           <button
             id="replay"
@@ -149,6 +160,7 @@ const game = {
     player.strength.health = 100;
     monster.strength.health = 100;
     monster.strength.energy = 100;
+    game.session.random = Math.floor(Math.random() * 10);
     monster.attacks.bite++;
     monster.attacks.claw++;
     monster.monsterName();
@@ -157,6 +169,11 @@ const game = {
     Array.from(document.querySelectorAll("#actions button")).forEach(button => {
       button.disabled = false;
     });
+    if (game.session.random * 10 < 50) {
+      $("#bearPicture").attr("src", "assetts/images/bbear.png");
+    } else {
+      $("#bearPicture").attr("src", "assetts/images/bear3s.png");
+    }
     game.updatePage();
     if ($("#popup")) {
       $("#popup").remove();

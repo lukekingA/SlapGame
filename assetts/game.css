@@ -21,6 +21,13 @@ body {
   background-color: rgb(43, 194, 83);
 }
 
+.lose {
+  transition: all .3s ease;
+  transform: scale(2.1);
+  width: 100%;
+  z-index: 300;
+}
+
 #popup {
   width: 15rem;
   position: absolute;
