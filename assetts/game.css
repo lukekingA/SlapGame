@@ -1,11 +1,17 @@
 /*Only use this file if you want to override bootstrap or create your own style*/
+body {
+  background-image: url('../assetts/images/castel.jpg');
+  background-size: 100vw 100%;
+  background-repeat: no-repeat;
+  color: white;
+  text-shadow: 1px 1px 2px black
+}
 
 .progressBar {
-  height: 20px;
-  position: relative;
+  height: 22px;
   background: #555;
   border-radius: 5px;
-  box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgb(59, 59, 59)
 }
 
 .progressBar>span {
@@ -13,4 +19,11 @@
   height: 20px;
   border-radius: 5px;
   background-color: rgb(43, 194, 83);
+}
+
+#drop {
+  position: absolute;
+  top: 10rem;
+  left: 10vw;
+  z-index: 1000;
 }

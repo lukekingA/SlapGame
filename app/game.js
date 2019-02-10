@@ -1,3 +1,31 @@
+// const player = {
+//   name: "Soldier",
+//   strength: {
+//     health: 100,
+//     energy: 100
+//   },
+//   experience: 0,
+//   attacks: {
+//     punch: 5,
+//     kick: 10,
+//     slap: 1
+//   },
+//   addons: {
+//     slap: {
+//       set: false,
+//       value: 2
+//     },
+//     punch: {
+//       set: false,
+//       value: 5
+//     },
+//     armor: {
+//       set: false,
+//       value: -5
+//     }
+//   }
+// }
+
 const game = {
   session: {
     plays: 0,
@@ -13,11 +41,11 @@ const game = {
       health: 100,
       energy: 100
     },
+    experience: 0,
     attacks: {
       punch: 5,
       kick: 10,
-      slap: 1,
-      addons: 0
+      slap: 1
     }
   },
   monster: {
@@ -27,44 +55,64 @@ const game = {
       energy: 100, //affected by age, random
       age: ""
     },
+    hunger: 0,
     attacks: {
-      bite: 20,
-      claw: 10,
-      addons: 0
+      bite: 10,
+      claw: 7
     }
   },
   addons: {
     player: {
-      knife: {
+      slap: {
+        set: false,
+        value: 2
+      },
+      punch: {
         set: false,
         value: 5
-      },
-      sword: {
-        set: false,
-        value: 10
       },
       armor: {
         set: false,
         value: -5
       }
-    },
-    monster: {
-      hunger: 0
     }
   },
   attack(event) {
     let attack = event.target.id;
     let value = game.player.attacks[attack];
+    if (game.addons.player[attack] && game.addons.player[attack].set == true) {
+      value += game.addons.player[attack].value;
+    }
     game.session.plays++;
+    game.player.experience++;
     if (game.monster.strength.health - value < 0) {
       game.monster.strength.health = 0;
-      game.winGame();
     } else {
       game.monster.strength.health -= Math.floor(
         value + value * ((100 - game.monster.strength.energy) / 100)
       );
     }
+    game.monsterAttack();
     game.updatePage();
+    if (!game.monster.strength.health || !game.player.strength.health) {
+      game.winGame();
+    }
+  },
+  monsterAttack() {
+    let attackValue = game.monster.attacks.claw;
+    if (Math.ceil(Math.random() * 10) > 5) {
+      attackValue = game.monster.attacks.bite;
+    }
+    attackValue -= game.addons.player.armor.set
+      ? game.addons.player.armor.value
+      : 0;
+    attackValue += attackValue * (game.monster.hunger / 100);
+    if (game.player.strength.health - attackValue < 0) {
+      game.player.strength.health = 0;
+    } else {
+      game.player.strength.health -= Math.floor(attackValue);
+    }
+    console.log(attackValue);
   },
   monsterAge() {
     let age = game.session.random * 5;
@@ -73,7 +121,7 @@ const game = {
       age < 15 ? "strong" : age < 30 ? "young" : "old";
   },
   monsterHunger() {
-    game.addons.monster.hunger = game.session.random * 10;
+    game.monster.hunger = game.session.random * 10;
   },
   makeMonsterName() {
     let index = 0;
@@ -86,12 +134,29 @@ const game = {
     }
     game.session.monsterName = game.monster.names[index];
   },
-  setAddons(event) {},
-  winGame() {},
+  setAddons(event) {
+    let value = event.target.dataset.upgrade;
+    if (game.player.experience >= 7) {
+      game.addons.player[value].set = true;
+      event.target.disabled = true;
+      event.target.nextElementSibling.disabled = false;
+      game.player.experience -= 7;
+    } else {
+      $(".col-6").prepend(`<h5 id="drop">You Need 7 Experience</h5>`);
+      setTimeout(() => {
+        $("#drop").remove();
+      }, 800);
+    }
+    game.updatePage();
+  },
+  winGame() {
+    alert("game over");
+    game.games.count++;
+  },
   updatePage() {
     $("#monsterName").text(game.session.monsterName);
     $("#monsterAge").text(game.monster.strength.age);
-    $("#monsterHunger").text(game.addons.monster.hunger);
+    $("#monsterHunger").text(game.monster.hunger);
     $("#monsterHealth").text(game.monster.strength.health);
     $("#monsterName~div>.progressBar span").css(
       "width",
@@ -103,6 +168,7 @@ const game = {
     );
     $("#playerName").text(game.player.name);
     $("#playerHealth").text(game.player.strength.health);
+    $("#playerExperience").text(game.player.experience);
   }
 };
 
@@ -111,9 +177,11 @@ function initialize() {
   Array.from(document.querySelectorAll("#actions button")).forEach(button => {
     button.addEventListener("click", game.attack);
   });
-  Array.from(document.querySelectorAll("#adons button")).forEach(button => {
-    button.addEventListener("click", game.setAddons);
-  });
+  Array.from(document.querySelectorAll("#playerName~button")).forEach(
+    button => {
+      button.addEventListener("click", game.setAddons);
+    }
+  );
   let random = Math.floor(Math.random() * 10);
   game.session.random = random;
   game.monsterAge();

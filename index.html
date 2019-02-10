@@ -22,8 +22,8 @@
 		<div class="col">
 			<div class="row">
 				<div class="col-3 text-left">
-					<h2>Monster</h2>
-					<H4 id="monsterName"></H4>
+					<h3>Monster</h3>
+					<h5 id="monsterName"></h5>
 					<div>
 						<p>age: <span id="monsterAge"></span></p>
 						<p>hunger: <span id="monsterHunger"></span></p>
@@ -31,10 +31,10 @@
 						<div class="progressBar"><span></span></div>
 					</div>
 				</div>
-				<div class="col-6 d-flex flex-column justify-content-between">
-					<div class="row h-75 ">
-						<div class="col d-flex justify-content-center">
-							<img class="img-fluid" src="assetts/images/Bear.png" alt="">
+				<div class="col-6 d-flex flex-column justify-content-end">
+					<div class="row">
+						<div class="col d-flex justify-content-end">
+							<img class="img-fluid" src="assetts/images/Bear-no background.png" alt="">
 						</div>
 					</div>
 					<div class="row">
@@ -46,15 +46,16 @@
 					</div>
 				</div>
 				<div class="col-3 d-flex flex-column align-items-end">
-					<h2>Player</h2>
-					<H4 id="playerName"></H4>
-					<div>
-						<p>health: <span id="playerHealth"></span></p>
+					<h3>Player</h3>
+					<h5 id="playerName"></h5>
+					<div class="w-100">
+						<p class="text-right">health: <span id="playerHealth"></span></p>
 						<div class="progressBar"><span></span></div>
-					</div id="addons">
-					<button id="knife" class="btn bg-dark btn-sm text-white mt-2" type="button">Knife</button>
-					<button id="sword" class="btn bg-dark btn-sm text-white mt-2" type="button">Sword</button>
-					<button id="armor" class="btn bg-dark btn-sm text-white mt-2" type="button">Armor</button>
+					</div>
+					<p class="text-right">experience: <span id="playerExperience"></span></p>
+					<button id="knife" class="btn bg-dark btn-sm text-white mt-2" type="button" data-upgrade="slap">Knife</button>
+					<button id="sword" class="btn bg-dark btn-sm text-white mt-2" type="button" data-upgrade="punch" disabled="true">Sword</button>
+					<button id="armor" class="btn bg-dark btn-sm text-white mt-2" type="button" disabled="true">Armor</button>
 				</div>
 			</div>
 		</div>
