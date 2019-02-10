@@ -21,9 +21,17 @@ body {
   background-color: rgb(43, 194, 83);
 }
 
+#popup {
+  width: 15rem;
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 200;
+}
+
 #drop {
   position: absolute;
   top: 10rem;
   left: 10vw;
-  z-index: 1000;
+  z-index: 100;
 }
