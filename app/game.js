@@ -13,16 +13,28 @@ const player = {
   },
   addons: {
     slap: {
+      name: "knife",
       set: false,
-      value: 2
+      value: 2,
+      cost: 3,
+      timer: 8,
+      resetTimer: 8
     },
     punch: {
+      name: "sword",
       set: false,
-      value: 5
+      value: 5,
+      cost: 6,
+      timer: 12,
+      resetTimer: 12
     },
     armor: {
+      name: "armor",
       set: false,
-      value: -5
+      value: -5,
+      cost: 15,
+      timer: 200,
+      resetTimer: 200
     }
   },
   setName(event) {
@@ -36,24 +48,33 @@ const player = {
   },
   setAddons(event) {
     let value = event.target.dataset.upgrade;
-    if (player.experience >= 4) {
+
+    if (player.experience >= player.addons[value].cost) {
       player.addons[value].set = true;
       event.target.disabled = true;
-      if (event.target.nextElementSibling) {
-        event.target.nextElementSibling.disabled = false;
-      }
-      player.experience -= 4;
-
+      player.experience -= player.addons[value].cost;
       $(`#${value}`).text(event.target.id);
     } else {
       $(".col-6").prepend(
-        `<h5 id='drop'>You Need ${4 - player.experience} More Experience</h5>`
+        `<h5 id='drop'>You Need ${player.addons[value].cost -
+          player.experience} More Experience</h5>`
       );
       setTimeout(() => {
         $("#drop").remove();
       }, 800);
     }
     game.updatePage();
+  },
+  addonMonitor() {
+    for (let addon in player.addons) {
+      let tool = player.addons[addon];
+      if (!tool.timer) {
+        tool.set = false;
+        $(`#${tool.name}`).attr("disabled", false);
+        tool.timer = tool.resetTimer;
+        $(`#${addon}`).text(addon);
+      }
+    }
   }
 };
 
@@ -116,9 +137,11 @@ const game = {
   attack(event) {
     let attack = event.target.id;
     let value = player.attacks[attack];
-    if (player.addons[attack] && player.addons[attack].set == true) {
+    if (player.addons[attack] && player.addons[attack].set) {
+      player.addons[attack].timer--;
       value += player.addons[attack].value;
     }
+    player.addonMonitor();
     value = Math.floor(value + value * ((100 - monster.strength.energy) / 100));
     game.session.plays++;
     player.experience++;
@@ -201,7 +224,14 @@ const game = {
     player.experience = 0;
     monster.attacks.claw = 10;
     monster.attacks.bite = 18;
+    for (let addon in player.addons) {
+      let tool = player.addons[addon];
+      tool.set = false;
+      tool.timer = tool.resetTimer;
+    }
     player.name = "Soldier";
+    player.wins = 0;
+    game.count = 0;
     for (let addon in player.addons) {
       player.addons[addon].set = false;
     }
