@@ -4,7 +4,12 @@ body {
   background-size: 100vw 100%;
   background-repeat: no-repeat;
   color: white;
-  text-shadow: 1px 1px 2px black
+  text-shadow: 1px 1px 2px black;
+  height: 100vh;
+}
+
+.custom-height {
+  height: calc(100vh - 205px)
 }
 
 .progressBar {

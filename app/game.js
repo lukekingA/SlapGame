@@ -26,7 +26,11 @@ const player = {
     }
   },
   setName(event) {
-    player.name = $("#setPlayerName").val();
+    if ($("#setPlayerName").val()) {
+      player.name = $("#setPlayerName").val();
+    } else {
+      player.name = "Soldier";
+    }
     $("#nameBox").remove();
     game.updatePage();
   },
@@ -263,7 +267,7 @@ function initialize() {
   template += `<div id="nameBox" class="card popup">
       <div class="card-body text-center">
       <h4 class="card-title">Soldier</h4>
-      <input id="setPlayerName" class="rounded" type="text" placeholder="Your Name"></input>
+      <input id="setPlayerName" class="rounded pl-1" type="text" placeholder="Your Name"></input>
         <button
           id="player"
           class="btn btn-sm mt-2 bg-dark text-white"
