@@ -131,6 +131,7 @@ const monster = {
 const game = {
   session: {
     plays: 0,
+    lastHitVal: 0,
     random: 0
   },
   count: 0,
@@ -150,6 +151,7 @@ const game = {
     } else {
       monster.strength.health -= value;
     }
+    game.session.lastHitVal = value;
     monster.monsterAttack();
     game.updatePage();
     if (!monster.strength.health || !player.strength.health) {
@@ -273,6 +275,7 @@ const game = {
     $("#playerExperience").text(player.experience);
     $("#games").text(game.count);
     $("#wins").text(player.wins);
+    $("#lastHitValue").text(game.session.lastHitVal);
   }
 };
 
