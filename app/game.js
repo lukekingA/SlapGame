@@ -234,11 +234,13 @@ const game = {
     player.name = "Soldier";
     player.wins = 0;
     game.count = 0;
+    game.session.lastHitVal = 0
     for (let addon in player.addons) {
       player.addons[addon].set = false;
     }
-    $("#sword").disabled = true;
-    $("#arrmor").disabled = true;
+    $("#knife").attr('disabled', false);
+    $("#sword").attr('disabled', false);
+    $("#arrmor").attr('disabled', false);
     game.updatePage();
   },
   updatePage() {
