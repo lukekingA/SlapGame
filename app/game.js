@@ -25,6 +25,11 @@ const player = {
       value: -5
     }
   },
+  setName(event) {
+    player.name = $("#setPlayerName").val();
+    $("#nameBox").remove();
+    game.updatePage();
+  },
   setAddons(event) {
     let value = event.target.dataset.upgrade;
     if (player.experience >= 4) {
@@ -34,6 +39,8 @@ const player = {
         event.target.nextElementSibling.disabled = false;
       }
       player.experience -= 4;
+
+      $(`#${value}`).text(event.target.id);
     } else {
       $(".col-6").prepend(
         `<h5 id='drop'>You Need ${4 - player.experience} More Experience</h5>`
@@ -127,22 +134,28 @@ const game = {
       button.disabled = true;
     });
     game.count++;
+    let picture = $("#bearPicture").attr("src");
     if (monster.strength.health < player.strength.health) {
       player.wins++;
+      $("#bearPicture").attr("src", "assetts/images/discraceBear.png");
+      $("#bearPicture").addClass("win");
+      setTimeout(() => {
+        $("#bearPicture").removeClass("win");
+        $("#bearPicture").attr("src", "assetts/images/cool-Bear.png");
+      }, 1000);
     } else {
-      let picture = $("#bearPicture").attr("src");
       $("#bearPicture").attr("src", "assetts/images/bear1.png");
       $("#bearPicture").addClass("lose");
       setTimeout(() => {
         $("#bearPicture").removeClass("lose");
         $("#bearPicture").attr("src", picture);
-      }, 300);
+      }, 1800);
     }
     let winner = player.strength.health ? player.name : monster.name;
 
     game.updatePage();
     $("body").append(
-      `<div id="popup" class="card">
+      `<div id="winBox" class="card popup">
         <div class="card-body text-center">
           <h4 class="card-title">${winner} Has Won</h4>
           <button
@@ -175,13 +188,16 @@ const game = {
       $("#bearPicture").attr("src", "assetts/images/bear3s.png");
     }
     game.updatePage();
-    if ($("#popup")) {
-      $("#popup").remove();
+    if ($("#winBox")) {
+      $("#winBox").remove();
     }
   },
   reset() {
     game.replay();
     player.experience = 0;
+    monster.attacks.claw = 10;
+    monster.attacks.bite = 18;
+    player.name = "Soldier";
     for (let addon in player.addons) {
       player.addons[addon].set = false;
     }
@@ -242,11 +258,24 @@ function initialize() {
   monster.monsterAge();
   monster.monsterName();
   monster.monsterHunger();
-  game.updatePage();
 
   let template = "";
-  template += ``;
+  template += `<div id="nameBox" class="card popup">
+      <div class="card-body text-center">
+      <h4 class="card-title">Soldier</h4>
+      <input id="setPlayerName" class="rounded" type="text" placeholder="Your Name"></input>
+        <button
+          id="player"
+          class="btn btn-sm mt-2 bg-dark text-white"
+          type="button"
+          onclick="player.setName()">
+          OK
+          </button>
+      </div>
+    </div>`;
+  $("body").append(template);
+
+  game.updatePage();
 }
 
 $(document).ready(initialize);
-//-Math.floor(game.monster.strength.energy / 3)
